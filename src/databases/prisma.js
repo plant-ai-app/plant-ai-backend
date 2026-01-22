@@ -1,12 +1,10 @@
-import "dotenv/config";
-import { defineConfig, env} from "prisma/config";
+import dotenv from "dotenv";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../generated/prisma/client/index.js";
 
-const adapter = new PrismaMariaDb({
-    url: env("DATABASE_URL")
-});
+dotenv.config();
 
-const prisma = new PrismaClient();
+const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
+const prisma = new PrismaClient({adapter});
 
 export default prisma;
