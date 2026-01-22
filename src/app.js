@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
+import {Routes} from './app/routes/index.routes.js';
 
 const app = express();
+Routes(app);
 
 app.use(express.json());
 app.use(cors({
@@ -9,9 +11,5 @@ app.use(cors({
     credentials: true
 }));
 
-
-app.get('/', (req, res) => {
-    res.json({"teste": "API is running"});
-});
 
 export default app;
