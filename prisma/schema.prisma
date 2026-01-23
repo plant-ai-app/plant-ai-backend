@@ -12,14 +12,23 @@ model usuario {
   nome          String          @db.VarChar(100)
   email         String          @unique(map: "email") @db.VarChar(150)
   senha_hash    String          @db.VarChar(255)
-  foto_url      String?         @db.VarChar(150)
+  fk_foto_perfil Int            @default(1)
   status        usuario_status? @default(ativo)
   criado_em     DateTime?       @default(now()) @db.DateTime(0)
   atualizado_em DateTime?       @default(now()) @db.DateTime(0)
   encerrado_em  DateTime?       @db.DateTime(0)
+
+  foto_perfil foto_perfil @relation(fields: [fk_foto_perfil], references: [id])
 }
 
 enum usuario_status {
   ativo
   inativo
+}
+
+model foto_perfil{
+  id Int @id @default(autoincrement())
+  path_url String @db.VarChar(255)
+
+  usuarios usuario[]
 }
