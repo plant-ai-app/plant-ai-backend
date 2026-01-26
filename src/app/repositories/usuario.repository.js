@@ -22,10 +22,7 @@ class UsuarioRepository {
 
     findById = async (id) => {
         return await this.prisma.usuario.findUnique({
-            where: { id },
-            include:{
-                foto_perfil: true
-            }
+            where: { id }
         });
     }
 
@@ -33,6 +30,13 @@ class UsuarioRepository {
         return await this.prisma.usuario.findUnique({
             where: { email }
         })
+    }
+
+    delete = async (id) => {
+       console.log("Id repository:" + id);
+        return await this.prisma.usuario.delete({
+            where: { id }
+        });
     }
 
 
