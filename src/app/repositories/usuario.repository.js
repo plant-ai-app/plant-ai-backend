@@ -39,6 +39,13 @@ class UsuarioRepository {
         });
     }
 
+    async update(id, data) {
+        return await this.prisma.usuario.update({
+            where: { id },
+            data
+        });
+    }
+
 
 }
 
