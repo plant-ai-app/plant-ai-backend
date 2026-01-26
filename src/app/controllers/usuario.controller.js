@@ -1,11 +1,9 @@
 import usuarioService from "../services/usuario.service.js";
 import { validarCriacaoUsuario } from "../middlewares/validations/usuario.validation.js";
+import { validarLoginUsuario } from "../middlewares/validations/usuario.validation.js";
 
 class UsuarioController{
 
-    constructor(){
-        this.usuarioService = usuarioService;
-    }
 
     create = async (req, res) => {
         try {
@@ -13,12 +11,26 @@ class UsuarioController{
 
             validarCriacaoUsuario(nome, email, senha);
 
-            const usuario = await this.usuarioService.create({nome, email, senha});
+            const usuario = await usuarioService.create({nome, email, senha});
 
-            res.status(201).json(usuario);
+            res.status(201).json({ message: "Usuário criado com sucesso.", usuario });
 
         } catch (error) {
             return res.status(400).json({ error: error.message });
+        }
+    }
+
+    login = async (req, res) => {
+        try {
+            const {email, senha} = req.body;
+
+            validarLoginUsuario(email, senha);
+
+            const usuario = await usuarioService.login(email, senha);
+
+            return res.json({ message: "Login realizado com sucesso.", usuario });
+        } catch (error) {
+            return res.status(401).json({ error: error.message });
         }
     }
 
@@ -28,6 +40,18 @@ class UsuarioController{
             res.json(usuarios);
         } catch (error) {
             res.status(500).json({ error: "Erro ao buscar usuários" });
+        }
+    }
+
+    delete = async (req, res) => {
+        try {
+            await usuarioService.delete({
+                usuarioIdLogado: (req.usuarioId),
+                usuarioIdAlvo: Number(req.params.id)
+            });
+            return res.status(200).json({message: "Usuário deletado com sucesso."});
+        } catch (error) {
+            return res.status(403).json({ error: error.message });
         }
     }
 
