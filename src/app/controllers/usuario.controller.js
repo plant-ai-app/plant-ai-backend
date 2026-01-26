@@ -1,6 +1,6 @@
 import usuarioService from "../services/usuario.service.js";
 import { validarCriacaoUsuario } from "../middlewares/validations/usuario.validation.js";
-import { validarLoginUsuario } from "../middlewares/validations/usuario.validation.js";
+import { validarLoginUsuario, validarAtualizacaoUsuario } from "../middlewares/validations/usuario.validation.js";
 
 class UsuarioController{
 
@@ -54,6 +54,43 @@ class UsuarioController{
             return res.status(403).json({ error: error.message });
         }
     }
+
+    update = async (req, res) => {
+        try {
+            const {id} = req.params;
+            const data = req.body;
+
+            validarAtualizacaoUsuario(data);
+
+            const usuarioAtualizado = await usuarioService.update(
+                Number(id),
+                data
+            );
+
+            return res.status(200).json({ message: "Usuário atualizado com sucesso.", usuarioAtualizado });
+
+
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
+    updateSenha = async (req, res) => {
+        try {
+            const {id} = req.params;
+            const {senhaAtual, novaSenha} = req.body;
+
+            await usuarioService.updateSenha(
+                Number(id),
+                senhaAtual,
+                novaSenha
+            );
+            return res.status(200).json({ message: "Senha atualizada com sucesso." });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
 
 }
 
