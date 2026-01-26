@@ -60,6 +60,7 @@ class UsuarioService{
             usuario
         };
     }
+
     delete = async ({ usuarioIdLogado, usuarioIdAlvo }) => {
         
         if (usuarioIdLogado !== usuarioIdAlvo) {
@@ -75,6 +76,46 @@ class UsuarioService{
 
         return await usuarioRepository.delete(usuarioIdAlvo);
     };
+
+    update = async (id, data) => {
+        
+        const usuarioExiste = await usuarioRepository.findById(id);
+
+        if(!usuarioExiste){
+            throw new Error("Usuário não encontrado.");
+        }
+
+        return usuarioRepository.update(id, data);
+
+    }
+
+    updateSenha = async (id, senhaAtual, novaSenha) => {
+
+        const usuario = await usuarioRepository.findById(id);
+
+        if(!usuario){
+            throw new Error("Usuário não encontrado.");
+        }
+        const senhaValida = await bcrypt.compare(senhaAtual, usuario.senha_hash);
+
+        if(!senhaValida){
+            throw new Error("Senha atual incorreta.");
+        }
+
+        if(novaSenha.length < 6){
+            throw new Error("A senha deve ter no mínimo 6 caracteres.");
+        }
+
+        const novaSenhaHash = await bcrypt.hash(novaSenha, 10);
+
+        return usuarioRepository.update(
+            id,
+            {senha_hash: novaSenhaHash}
+        )
+
+
+    }
+
 
 }
 
