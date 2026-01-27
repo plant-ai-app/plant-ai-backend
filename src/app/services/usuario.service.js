@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 class UsuarioService{
 
     compararSenhas = async (usuario, senhaDigitada) => {
-        if(!senhaDigitada || usuario){
+        if(!senhaDigitada || !usuario){
             throw new Error("Senha inválida.");
         }
         const senhaValida = await bcrypt.compare(senhaDigitada, usuario.senha_hash);
@@ -77,17 +77,23 @@ class UsuarioService{
         };
     }
 
-    delete = async ({ usuarioIdLogado, usuarioIdAlvo }) => {
+    delete = async ({ usuarioIdLogado, usuarioIdAlvo, senha }) => {
         
         if (usuarioIdLogado !== usuarioIdAlvo) {
             throw new Error("Você não tem permissão para excluir este usuário.");
         }
 
+        if(!senha){
+            throw new Error("A senha atual é obrigatória.");
+        }
+        
         const user = await usuarioRepository.findById(usuarioIdAlvo);
 
         if (!user) {
             throw new Error("Usuário não encontrado.");
         }
+
+        await this.compararSenhas(user, senha);
 
         return await usuarioRepository.delete(usuarioIdAlvo);
     }
