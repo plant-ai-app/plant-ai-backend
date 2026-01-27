@@ -1,4 +1,5 @@
 import usuarioRepository from "../repositories/usuario.repository.js";
+import { validarSenha, validarAtualizacaoUsuario, validarLoginUsuario, validarCriacaoUsuario } from "../middlewares/validations/usuario.validation.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -22,6 +23,9 @@ class UsuarioService{
         if(usuarioExistente){
             throw new Error("Já existe um usuário cadastrado com esse e-mail.");
         }
+
+        validarCriacaoUsuario(nome, email, senha);
+
         const senhaHash = await bcrypt.hash(senha, 10);
 
         const usuario = await usuarioRepository.create({
@@ -49,6 +53,8 @@ class UsuarioService{
             throw new Error("E-mail ou senha inválidos.");
         }
 
+        validarLoginUsuario(email, senha);
+
         const token = jwt.sign(
             {id: usuario.id, email: usuario.email},
             process.env.JWT_SECRET,
@@ -73,9 +79,8 @@ class UsuarioService{
             throw new Error("Usuário não encontrado.");
         }
 
-
         return await usuarioRepository.delete(usuarioIdAlvo);
-    };
+    }
 
     update = async (id, data) => {
         
@@ -84,6 +89,8 @@ class UsuarioService{
         if(!usuarioExiste){
             throw new Error("Usuário não encontrado.");
         }
+
+        validarAtualizacaoUsuario(data);
 
         return usuarioRepository.update(id, data);
 
@@ -102,9 +109,7 @@ class UsuarioService{
             throw new Error("Senha atual incorreta.");
         }
 
-        if(novaSenha.length < 6){
-            throw new Error("A senha deve ter no mínimo 6 caracteres.");
-        }
+        validarSenha(novaSenha);
 
         const novaSenhaHash = await bcrypt.hash(novaSenha, 10);
 
@@ -112,7 +117,6 @@ class UsuarioService{
             id,
             {senha_hash: novaSenhaHash}
         )
-
 
     }
 
