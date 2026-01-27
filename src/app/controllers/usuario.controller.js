@@ -1,6 +1,4 @@
 import usuarioService from "../services/usuario.service.js";
-import { validarCriacaoUsuario } from "../middlewares/validations/usuario.validation.js";
-import { validarLoginUsuario, validarAtualizacaoUsuario } from "../middlewares/validations/usuario.validation.js";
 
 class UsuarioController{
 
@@ -8,8 +6,6 @@ class UsuarioController{
     create = async (req, res) => {
         try {
             const {nome, email, senha} = req.body;
-
-            validarCriacaoUsuario(nome, email, senha);
 
             const usuario = await usuarioService.create({nome, email, senha});
 
@@ -23,8 +19,6 @@ class UsuarioController{
     login = async (req, res) => {
         try {
             const {email, senha} = req.body;
-
-            validarLoginUsuario(email, senha);
 
             const usuario = await usuarioService.login(email, senha);
 
@@ -59,8 +53,6 @@ class UsuarioController{
         try {
             const {id} = req.params;
             const data = req.body;
-
-            validarAtualizacaoUsuario(data);
 
             const usuarioAtualizado = await usuarioService.update(
                 Number(id),
