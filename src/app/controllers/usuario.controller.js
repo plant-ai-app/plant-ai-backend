@@ -39,9 +39,12 @@ class UsuarioController{
 
     delete = async (req, res) => {
         try {
+            const {senha} = req.body;
+
             await usuarioService.delete({
                 usuarioIdLogado: (req.usuarioId),
-                usuarioIdAlvo: Number(req.params.id)
+                usuarioIdAlvo: Number(req.params.id),
+                senha
             });
             return res.status(200).json({message: "Usuário deletado com sucesso."});
         } catch (error) {
