@@ -7,10 +7,8 @@ export const validarCriacaoUsuario = (name, email, senha) => {
     if (!name || !email || !senha) {
         throw new Error("Nome, e-mail e senha são obrigatórios.");
     }
-
-    if (senha.length < 6) {
-        throw new Error("A senha deve ter no mínimo 6 caracteres.");
-    }
+    
+    validarSenha(senha);
 }
 
 export const validarLoginUsuario = (email, senha) => {
@@ -41,4 +39,30 @@ export const validarAtualizacaoUsuario = (data) =>{
     }
 
 
+}
+
+export function validarSenha(senha) {
+  if (!senha) {
+    throw new Error("Senha é obrigatória");
+  }
+
+  if (senha.length < 8) {
+    throw new Error("Senha deve ter no mínimo 8 caracteres");
+  }
+
+  if (!/[A-Z]/.test(senha)) {
+    throw new Error("Senha deve conter letra maiúscula");
+  }
+
+  if (!/[a-z]/.test(senha)) {
+    throw new Error("Senha deve conter letra minúscula");
+  }
+
+  if (!/[0-9]/.test(senha)) {
+    throw new Error("Senha deve conter número");
+  }
+
+  if (!/[@$!%*?&#]/.test(senha)) {
+    throw new Error("Senha deve conter caractere especial");
+  }
 }
