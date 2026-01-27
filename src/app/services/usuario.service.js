@@ -6,6 +6,16 @@ import jwt from 'jsonwebtoken';
 
 class UsuarioService{
 
+    compararSenhas = async (usuario, senhaDigitada) => {
+        if(!senhaDigitada || usuario){
+            throw new Error("Senha inválida.");
+        }
+        const senhaValida = await bcrypt.compare(senhaDigitada, usuario.senha_hash);
+
+        if(!senhaValida){
+            throw new Error("Senha incorreta.");
+        }
+    }
 
     findAll = async () => {
         const usuarios = await usuarioRepository.findAll();
