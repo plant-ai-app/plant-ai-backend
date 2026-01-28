@@ -8,17 +8,19 @@ datasource db {
 }
 
 model usuario {
-  id            Int             @id @default(autoincrement())
-  nome          String          @db.VarChar(100)
-  email         String          @unique(map: "email") @db.VarChar(150)
-  senha_hash    String          @db.VarChar(255)
-  fk_foto_perfil Int            @default(1)
-  status        usuario_status? @default(ativo)
-  criado_em     DateTime?       @default(now()) @db.DateTime(0)
-  atualizado_em DateTime?       @default(now()) @db.DateTime(0)
-  encerrado_em  DateTime?       @db.DateTime(0)
+  id             Int             @id @default(autoincrement())
+  nome           String          @db.VarChar(100)
+  email          String          @unique(map: "email") @db.VarChar(150)
+  senha_hash     String          @db.VarChar(255)
+  fk_foto_perfil Int             @default(1)
+  status         usuario_status? @default(ativo)
+  criado_em      DateTime?       @default(now()) @db.DateTime(0)
+  atualizado_em  DateTime?       @default(now()) @db.DateTime(0)
+  encerrado_em   DateTime?       @db.DateTime(0)
 
   foto_perfil foto_perfil @relation(fields: [fk_foto_perfil], references: [id])
+
+  tokens pwd_reset_token[]
 }
 
 enum usuario_status {
@@ -26,9 +28,20 @@ enum usuario_status {
   inativo
 }
 
-model foto_perfil{
-  id Int @id @default(autoincrement())
+model foto_perfil {
+  id       Int    @id @default(autoincrement())
   path_url String @db.VarChar(255)
 
   usuarios usuario[]
+}
+
+model pwd_reset_token {
+  id            Int       @id @default(autoincrement())
+  fk_usuario_id Int
+  token_hash    String    @db.VarChar(255)
+  expira_em     DateTime
+  encerrado_em  DateTime?
+  criado_em     DateTime? @default(now())
+
+  usuario usuario @relation(fields: [fk_usuario_id], references: [id])
 }
