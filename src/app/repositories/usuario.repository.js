@@ -39,8 +39,8 @@ class UsuarioRepository {
         });
     }
 
-    async update(id, data) {
-        return await this.prisma.usuario.update({
+    update(id, data) {
+        return this.prisma.usuario.update({
             where: { id },
             data
         });
