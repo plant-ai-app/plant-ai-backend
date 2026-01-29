@@ -1,6 +1,9 @@
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import passwordRepository from '../repositories/password.repository.js';
+import usuarioRepository from '../repositories/usuario.repository.js';
+import prisma from '../../databases/prisma.js';
+import { validarSenha } from '../middlewares/validations/usuario.validation.js';
 
 class PasswordService {
     async forgotPassword(email) {
@@ -31,6 +34,50 @@ class PasswordService {
         console.log(`Link de reset de senha: ${link}`);
 
 
+    }
+
+    async resetPassword({token, novaSenha, confirmarSenha}) {
+
+        // 1 validar entradas
+        if (novaSenha !== confirmarSenha) {
+            throw new Error('As senhas não coincidem.');
+        }
+
+        //2 validar nova senha
+        validarSenha(novaSenha);
+
+        const tokensAtivos = await passwordRepository.findActiveTokenWithUser();
+
+          // 3️ Encontrar token correspondente
+        const tokenEncontrado = await Promise.all(
+            tokensAtivos.map(async (registro) => {
+            const match = await bcrypt.compare(token, registro.token_hash);
+            return match ? registro : null;
+            })
+        ).then(resultados => resultados.find(r => r));
+
+        if (!tokenEncontrado) {
+            throw new Error('Token inválido.');
+        }
+
+        // 4 tokens expirados ?
+        if (new Date() > tokenEncontrado.expira_em) {
+            throw new Error("Token expirado.");
+        }
+
+        // 5 atualizar senha
+        const senhaHash = await bcrypt.hash(novaSenha, 10);
+
+        await usuarioRepository.update(
+            tokenEncontrado.fk_usuario_id,
+            { senha_hash: senhaHash }
+        )
+
+        // 6️ Invalidar token
+        await prisma.pwd_reset_token.update({
+            where: { id: tokenEncontrado.id },
+            data: { encerrado_em: new Date() }
+        });
     }
 }
 
