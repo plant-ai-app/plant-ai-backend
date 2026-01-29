@@ -4,6 +4,11 @@ import passwordRepository from '../repositories/password.repository.js';
 
 class PasswordService {
     async forgotPassword(email) {
+
+        if(!email) {
+            throw new Error('Por favor, forneça um e-mail.');
+        }
+
         const usuario = await passwordRepository.findUserByEmail(email);
 
         if (!usuario) return;
