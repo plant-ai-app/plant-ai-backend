@@ -5,4 +5,4 @@ import passwordController from "../controllers/password.controller.js";
 
 const router = Router();
 
-router.post("/password/forgot", passwordController.forgotPassword);
+router.post("/password/forgot", passwordController.forgot);
