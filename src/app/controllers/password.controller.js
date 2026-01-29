@@ -1,4 +1,4 @@
-import passwordService from "../services/password.service";
+import passwordService from "../services/password.service.js";
 
 class passwordController{
     forgot = async (req, res) => {
