@@ -12,5 +12,16 @@ class passwordController{
            return res.status(500).json({message: error.message});
         }
     }
+    reset = async (req, res) => {
+        try {
+            const { token, novaSenha, confirmarSenha } = req.body;
+
+            await passwordService.resetPassword({token, novaSenha, confirmarSenha});
+            return res.status(200).json({message: "Senha redefinida com sucesso."});
+
+        } catch (error) {
+            return res.status(500).json({message: error.message});
+        }
+    }
 }
 export default new passwordController();
