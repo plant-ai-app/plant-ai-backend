@@ -1,8 +1,6 @@
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
-import passwordRepository from '../repositories/password.repository';
-import emailService from '../../infra/email/email.service.js';
-import e from 'express';
+import passwordRepository from '../repositories/password.repository.js';
 
 class PasswordService {
     async forgotPassword(email) {
