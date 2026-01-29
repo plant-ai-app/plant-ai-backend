@@ -1,4 +1,4 @@
-import { prisma } from "../../databases/prisma.js";
+import prisma from "../../databases/prisma.js";
 
 class PasswordRepository {
     
