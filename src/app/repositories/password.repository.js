@@ -21,13 +21,21 @@ class PasswordRepository {
     });
   }
 
+  async findActiveTokenWithUser(){
+    return prisma.pwd_reset_token.findMany({
+      where:{
+        encerrado_em: null,
+      },
+      include:{
+        usuario: true
+      }
+    })
+  }
+
   async createToken(data) {
     return prisma.pwd_reset_token.create({ data });
   }
 
-  async findActiveToken(){
-    return prisma.pwd
-  }
 }
 
 export default new PasswordRepository();
