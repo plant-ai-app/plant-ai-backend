@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import passwordRepository from '../repositories/password.repository.js';
 import usuarioRepository from '../repositories/usuario.repository.js';
+import emailService from '../../infra/email/email.service.js';
 import prisma from '../../databases/prisma.js';
 import { validarSenha } from '../middlewares/validations/usuario.validation.js';
 
@@ -28,12 +29,9 @@ class PasswordService {
             token_hash: tokenHash,
             expira_em: expriraEm
         })
-
-        // link por enquato
         const link = `http://localhost:3000/reset-password?token=${token}`;
-        console.log(`Link de reset de senha: ${link}`);
-
-
+        await emailService.sendPasswordReset(usuario.email, link);
+        
     }
 
     async resetPassword({token, novaSenha, confirmarSenha}) {
