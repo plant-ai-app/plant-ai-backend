@@ -1,11 +1,15 @@
-export const validarCriacaoUsuario = (name, email, senha) => {
+export const validarCriacaoUsuario = (name, email, senha, confirmaSenha) => {
 
     name = name?.trim();
     email = email?.trim().toLowerCase();
     senha = senha?.trim();
+    confirmaSenha = confirmaSenha?.trim();
 
-    if (!name || !email || !senha) {
+   if (!name || !email || !senha || !confirmaSenha) {
         throw new Error("Nome, e-mail e senha são obrigatórios.");
+    }
+    if (senha !== confirmaSenha) {
+        throw new Error("As senhas não coincidem.");
     }
     
     validarSenha(senha);
@@ -41,7 +45,7 @@ export const validarAtualizacaoUsuario = (data) =>{
 
 }
 
-export function validarSenha(senha) {
+export const validarSenha = (senha) => {
   if (!senha) {
     throw new Error("Senha é obrigatória");
   }
