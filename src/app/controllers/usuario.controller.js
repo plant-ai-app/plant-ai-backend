@@ -5,9 +5,9 @@ class UsuarioController{
 
     create = async (req, res) => {
         try {
-            const {nome, email, senha} = req.body;
+            const {nome, email, senha, confirmaSenha} = req.body;
 
-            const usuario = await usuarioService.create({nome, email, senha});
+            const usuario = await usuarioService.create({nome, email, senha, confirmaSenha});
 
             res.status(201).json({ message: "Usuário criado com sucesso.", usuario });
 
