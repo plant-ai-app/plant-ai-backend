@@ -26,7 +26,7 @@ class UsuarioService{
         return usuarios;
     }
 
-    create = async ({nome, email, senha}) => {
+    create = async ({nome, email, senha, confirmaSenha}) => {
         //email unico
         const usuarioExistente = await usuarioRepository.findByEmail(email);
 
@@ -34,7 +34,7 @@ class UsuarioService{
             throw new Error("Já existe um usuário cadastrado com esse e-mail.");
         }
 
-        validarCriacaoUsuario(nome, email, senha);
+        validarCriacaoUsuario(nome, email, senha, confirmaSenha);
 
         const senhaHash = await bcrypt.hash(senha, 10);
 
