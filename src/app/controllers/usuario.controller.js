@@ -12,7 +12,9 @@ class UsuarioController{
             res.status(201).json({ message: "Usuário criado com sucesso.", usuario });
 
         } catch (error) {
-            return res.status(400).json({ error: error.message });
+            console.log(error);
+            return res.status(400).json({message: error.message});
+
         }
     }
 
@@ -24,7 +26,8 @@ class UsuarioController{
 
             return res.json({ message: "Login realizado com sucesso.", usuario });
         } catch (error) {
-            return res.status(401).json({ error: error.message });
+            console.log(error);
+            return res.status(401).json({message: error.message});
         }
     }
 
@@ -48,7 +51,7 @@ class UsuarioController{
             });
             return res.status(200).json({message: "Usuário deletado com sucesso."});
         } catch (error) {
-            return res.status(403).json({ error: error.message });
+            return res.status(403).json({message: error.message});
         }
     }
 
@@ -66,7 +69,7 @@ class UsuarioController{
 
 
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({ message: error.message });
         }
     }
 
