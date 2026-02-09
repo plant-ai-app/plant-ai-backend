@@ -46,6 +46,8 @@ export const validarAtualizacaoUsuario = (data) =>{
 }
 
 export const validarSenha = (senha) => {
+  senha = senha?.trim();
+
   if (!senha) {
     throw new Error("Senha é obrigatória");
   }
