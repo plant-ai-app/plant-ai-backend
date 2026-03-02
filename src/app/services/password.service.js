@@ -7,32 +7,32 @@ import prisma from '../../databases/prisma.js';
 import { validarSenha } from '../middlewares/validations/usuario.validation.js';
 
 class PasswordService {
-    async forgotPassword(email) {
+        async forgotPassword(email) {
 
-        if(!email) {
-            throw new Error('Por favor, forneça um e-mail.');
+            if(!email) {
+                throw new Error('Por favor, forneça um e-mail.');
+            }
+
+            const usuario = await passwordRepository.findUserByEmail(email);
+
+            if (!usuario) return;
+
+            await passwordRepository.invalidateUserTokens(usuario.id);
+
+            const token = crypto.randomBytes(32).toString('hex');
+            const tokenHash = await bcrypt.hash(token, 10);
+
+            const expriraEm = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos
+
+            await passwordRepository.createToken({
+                fk_usuario_id: usuario.id,
+                token_hash: tokenHash,
+                expira_em: expriraEm
+            })
+            const link = `http://10.181.201.214:5173/reset-password?token=${token}`;
+            await emailService.sendPasswordReset(usuario.email, link);
+            
         }
-
-        const usuario = await passwordRepository.findUserByEmail(email);
-
-        if (!usuario) return;
-
-        await passwordRepository.invalidateUserTokens(usuario.id);
-
-        const token = crypto.randomBytes(32).toString('hex');
-        const tokenHash = await bcrypt.hash(token, 10);
-
-        const expriraEm = new Date(Date.now() + 15 * 60 * 1000); // 15 minutos
-
-        await passwordRepository.createToken({
-            fk_usuario_id: usuario.id,
-            token_hash: tokenHash,
-            expira_em: expriraEm
-        })
-        const link = `http://localhost:3000/reset-password?token=${token}`;
-        await emailService.sendPasswordReset(usuario.email, link);
-        
-    }
 
     async resetPassword({token, novaSenha, confirmarSenha}) {
 

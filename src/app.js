@@ -7,8 +7,9 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
+    origin: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    credentials: true
+    // credentials: true
 }));
 
 Routes(app);
