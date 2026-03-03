@@ -8,6 +8,11 @@ class localRepository{
         });
     }
 
+    findAll = async () => {
+        return await prisma.local.findMany()
+    }
+
+
 
 }
 
