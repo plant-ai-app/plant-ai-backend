@@ -15,7 +15,7 @@ model Usuario {
   fk_foto_perfil Int            @default(1)
   status         UsuarioStatus? @default(ativo)
   criado_em      DateTime?      @default(now()) @db.DateTime(0)
-  atualizado_em  DateTime?      @default(now()) @db.DateTime(0)
+  atualizado_em  DateTime?      @updatedAt
   encerrado_em   DateTime?      @db.DateTime(0)
 
   foto_perfil FotoPerfil @relation(fields: [fk_foto_perfil], references: [id])
