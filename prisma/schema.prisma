@@ -56,7 +56,7 @@ model Planta {
   nome_cientifico String?   @db.VarChar(100)
   apelido         String?   @db.VarChar(100)
   foto_url        String?   @db.VarChar(255)
-  data_aquisicao  DateTime? @db.DateTime(0)
+  data_aquisicao  DateTime? @db.Date
   observacao      String?   @db.VarChar(255)
   criado_em       DateTime  @default(now()) @db.DateTime(0)
   atualizado_em   DateTime  @updatedAt
