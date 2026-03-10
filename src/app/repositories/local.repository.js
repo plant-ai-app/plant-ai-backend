@@ -1,6 +1,6 @@
-import prisma from "../../databases/prisma";
+import prisma from "../../databases/prisma.js";
 
-class localRepository{
+class localRepository {
 
     create = async (data) => {
         return await prisma.local.create({
