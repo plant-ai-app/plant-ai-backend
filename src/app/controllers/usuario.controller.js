@@ -2,32 +2,31 @@ import usuarioService from "../services/usuario.service.js";
 
 class UsuarioController{
 
-
     create = async (req, res) => {
         try {
             const {nome, email, senha, confirmaSenha} = req.body;
 
-            const usuario = await usuarioService.create({nome, email, senha, confirmaSenha});
+            const usuario = await usuarioService.create(nome, email, senha, confirmaSenha);
 
             res.status(201).json({ message: "Usuário criado com sucesso.", usuario });
 
         } catch (error) {
             console.log(error);
-            return res.status(400).json({message: error.message});
+            return res.status(400).json({ message: error.message });
 
         }
     }
 
     login = async (req, res) => {
         try {
-            const {email, senha} = req.body;
+            const { email, senha } = req.body;
 
             const usuario = await usuarioService.login(email, senha);
 
             return res.json({ message: "Login realizado com sucesso.", usuario });
         } catch (error) {
             console.log(error);
-            return res.status(401).json({message: error.message});
+            return res.status(401).json({ message: error.message });
         }
     }
 
@@ -42,22 +41,22 @@ class UsuarioController{
 
     delete = async (req, res) => {
         try {
-            const {senha} = req.body;
+            const { senha } = req.body;
 
             await usuarioService.delete({
                 usuarioIdLogado: (req.usuarioId),
                 usuarioIdAlvo: Number(req.params.id),
                 senha
             });
-            return res.status(200).json({message: "Usuário deletado com sucesso."});
+            return res.status(200).json({ message: "Usuário deletado com sucesso." });
         } catch (error) {
-            return res.status(403).json({message: error.message});
+            return res.status(403).json({ message: error.message });
         }
     }
 
     update = async (req, res) => {
         try {
-            const {id} = req.params;
+            const { id } = req.params;
             const data = req.body;
 
             const usuarioAtualizado = await usuarioService.update(
@@ -75,17 +74,19 @@ class UsuarioController{
 
     updateSenha = async (req, res) => {
         try {
-            const {id} = req.params;
-            const {senhaAtual, novaSenha} = req.body;
+            const userId = req.usuarioId;
+            const { senhaAtual, senhaNova } = req.body;
 
-            await usuarioService.updateSenha(
-                Number(id),
+            await usuarioService.updateSenha({
+                userId: Number(userId),
                 senhaAtual,
-                novaSenha
-            );
+                senhaNova
+            });
+
             return res.status(200).json({ message: "Senha atualizada com sucesso." });
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            console.log(error);
+            return res.status(400).json({ error: error.message });
         }
     }
 
