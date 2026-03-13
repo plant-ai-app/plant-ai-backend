@@ -44,7 +44,8 @@ class PlantaController {
 
     async findByUserId(req, res) {
         try {
-            const plantas = await plantaService.findByUserId(req.usuarioId);
+            const userId = req.usuarioId;
+            const plantas = await plantaService.findByUserId(userId);
             return res.status(200).json({message: "Plantas encontradas com sucesso.", plantas});
         } catch (error) {
             return res.status(400).json({ message: error.message });
