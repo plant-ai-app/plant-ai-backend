@@ -77,17 +77,12 @@ class UsuarioService {
         };
     }
 
-    delete = async ({ usuarioIdLogado, usuarioIdAlvo, senha }) => {
-
-        if (usuarioIdLogado !== usuarioIdAlvo) {
-            throw new Error("Você não tem permissão para excluir este usuário.");
-        }
-
+    delete = async (senha, usuarioId) => {
         if (!senha) {
             throw new Error("A senha atual é obrigatória.");
         }
 
-        const user = await usuarioRepository.findById(usuarioIdAlvo);
+        const user = await usuarioRepository.findById(usuarioId);
 
         if (!user) {
             throw new Error("Usuário não encontrado.");
@@ -95,7 +90,7 @@ class UsuarioService {
 
         await this.compararSenhas(user, senha);
 
-        return await usuarioRepository.delete(usuarioIdAlvo);
+        return await usuarioRepository.delete(usuarioId);
     }
 
     update = async (id, data) => {
