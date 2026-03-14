@@ -6,7 +6,7 @@ class UsuarioController{
         try {
             const {nome, email, senha, confirmaSenha} = req.body;
 
-            const usuario = await usuarioService.create(nome, email, senha, confirmaSenha);
+            const usuario = await usuarioService.create({nome, email, senha, confirmaSenha});
 
             res.status(201).json({ message: "Usuário criado com sucesso.", usuario });
 
@@ -42,14 +42,13 @@ class UsuarioController{
     delete = async (req, res) => {
         try {
             const { senha } = req.body;
+            const usuarioId = req.usuarioId;
 
-            await usuarioService.delete({
-                usuarioIdLogado: (req.usuarioId),
-                usuarioIdAlvo: Number(req.params.id),
-                senha
-            });
+            await usuarioService.delete(senha, usuarioId);
+
             return res.status(200).json({ message: "Usuário deletado com sucesso." });
         } catch (error) {
+            console.log(error);
             return res.status(403).json({ message: error.message });
         }
     }
