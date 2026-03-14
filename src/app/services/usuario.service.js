@@ -4,33 +4,33 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 
-class UsuarioService{
+class UsuarioService {
 
     compararSenhas = async (usuario, senhaDigitada) => {
-        if(!senhaDigitada || !usuario){
+        if (!senhaDigitada || !usuario) {
             throw new Error("Senha inválida.");
         }
         const senhaValida = await bcrypt.compare(senhaDigitada, usuario.senha_hash);
 
-        if(!senhaValida){
+        if (!senhaValida) {
             throw new Error("Senha incorreta.");
         }
     }
 
     findAll = async () => {
         const usuarios = await usuarioRepository.findAll();
-        if(!usuarios || usuarios.length === 0){
+        if (!usuarios || usuarios.length === 0) {
             return [];
         }
 
         return usuarios;
     }
 
-    create = async ({nome, email, senha, confirmaSenha}) => {
+    create = async ({ nome, email, senha, confirmaSenha }) => {
         //email unico
         const usuarioExistente = await usuarioRepository.findByEmail(email);
 
-        if(usuarioExistente){
+        if (usuarioExistente) {
             throw new Error("Já existe um usuário cadastrado com esse e-mail.");
         }
 
@@ -53,22 +53,22 @@ class UsuarioService{
         // verificar se o usuario existe
         const usuario = await usuarioRepository.findByEmail(email);
 
-        if(!usuario){
+        if (!usuario) {
             throw new Error("E-mail ou senha inválidos.");
         }
 
         const senhaValida = await bcrypt.compare(senha, usuario.senha_hash);
 
-        if(!senhaValida){
+        if (!senhaValida) {
             throw new Error("E-mail ou senha inválidos.");
         }
 
         validarLoginUsuario(email, senha);
 
         const token = jwt.sign(
-            {id: usuario.id, email: usuario.email},
+            { id: usuario.id, email: usuario.email },
             process.env.JWT_SECRET,
-            {expiresIn: '30d'}
+            { expiresIn: '30d' }
         )
 
         return {
@@ -78,15 +78,15 @@ class UsuarioService{
     }
 
     delete = async ({ usuarioIdLogado, usuarioIdAlvo, senha }) => {
-        
+
         if (usuarioIdLogado !== usuarioIdAlvo) {
             throw new Error("Você não tem permissão para excluir este usuário.");
         }
 
-        if(!senha){
+        if (!senha) {
             throw new Error("A senha atual é obrigatória.");
         }
-        
+
         const user = await usuarioRepository.findById(usuarioIdAlvo);
 
         if (!user) {
@@ -99,10 +99,10 @@ class UsuarioService{
     }
 
     update = async (id, data) => {
-        
+
         const usuarioExiste = await usuarioRepository.findById(id);
 
-        if(!usuarioExiste){
+        if (!usuarioExiste) {
             throw new Error("Usuário não encontrado.");
         }
 
@@ -112,26 +112,27 @@ class UsuarioService{
 
     }
 
-    updateSenha = async (id, senhaAtual, novaSenha) => {
+    updateSenha = async ({ userId, senhaAtual, senhaNova }) => {
 
-        const usuario = await usuarioRepository.findById(id);
+        const usuario = await usuarioRepository.findById(userId);
 
-        if(!usuario){
+        if (!usuario) {
             throw new Error("Usuário não encontrado.");
         }
+
         const senhaValida = await bcrypt.compare(senhaAtual, usuario.senha_hash);
 
-        if(!senhaValida){
+        if (!senhaValida) {
             throw new Error("Senha atual incorreta.");
         }
 
-        validarSenha(novaSenha);
+        validarSenha(senhaNova);
 
-        const novaSenhaHash = await bcrypt.hash(novaSenha, 10);
+        const novaSenhaHash = await bcrypt.hash(senhaNova, 10);
 
         return usuarioRepository.update(
-            id,
-            {senha_hash: novaSenhaHash}
+            userId,
+            { senha_hash: novaSenhaHash }
         )
 
     }
