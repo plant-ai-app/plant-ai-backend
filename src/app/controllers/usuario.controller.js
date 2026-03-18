@@ -39,6 +39,22 @@ class UsuarioController{
         }
     }
 
+    findById = async (req, res) => {
+        try {
+            const id = req.usuarioId;
+            if (!id) {
+                return res.status(400).json({ message: "ID do usuário não fornecido." });
+            }
+
+            const usuario = await usuarioService.findById(Number(id));
+
+            return res.status(200).json(usuario);
+        } catch (error) {
+            console.log(error);
+            return res.status(404).json({ message: error.message });
+        }
+    }
+
     delete = async (req, res) => {
         try {
             const { senha } = req.body;
@@ -55,11 +71,11 @@ class UsuarioController{
 
     update = async (req, res) => {
         try {
-            const { id } = req.params;
+            const usuarioId = req.usuarioId;
             const data = req.body;
 
             const usuarioAtualizado = await usuarioService.update(
-                Number(id),
+                Number(usuarioId),
                 data
             );
 
