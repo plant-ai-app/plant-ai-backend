@@ -26,6 +26,19 @@ class UsuarioService {
         return usuarios;
     }
 
+    findById = async (id) => {
+        const usuario = await usuarioRepository.findById(id);
+
+        if (!usuario) {
+            throw new Error("Usuário não encontrado.");
+        }
+
+        // Remove a senha_hash para retornar apenas as informações da entidade
+        const { senha_hash, ...usuarioInfo } = usuario;
+
+        return usuarioInfo;
+    }
+
     create = async ({ nome, email, senha, confirmaSenha }) => {
         //email unico
         const usuarioExistente = await usuarioRepository.findByEmail(email);
