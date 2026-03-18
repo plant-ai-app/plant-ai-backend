@@ -22,7 +22,10 @@ class UsuarioRepository {
 
     findById = async (id) => {
         return await this.prisma.usuario.findUnique({
-            where: { id }
+            where: { id },
+            include: {
+                foto_perfil: true
+            }
         });
     }
 
