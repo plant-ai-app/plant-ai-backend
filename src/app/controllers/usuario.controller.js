@@ -48,7 +48,7 @@ class UsuarioController{
 
             const usuario = await usuarioService.findById(Number(id));
 
-            return res.status(200).json(usuario);
+            return res.status(200).json({ message: "Usuário encontrado com sucesso.", data: {usuario} });
         } catch (error) {
             console.log(error);
             return res.status(404).json({ message: error.message });
@@ -79,7 +79,7 @@ class UsuarioController{
                 data
             );
 
-            return res.status(200).json({ message: "Usuário atualizado com sucesso.", usuarioAtualizado });
+            return res.status(200).json({ message: "Usuário atualizado com sucesso.", data: {usuarioAtualizado} });
 
 
         } catch (error) {
