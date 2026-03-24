@@ -4,7 +4,7 @@ import passwordRepository from '../repositories/password.repository.js';
 import usuarioRepository from '../repositories/usuario.repository.js';
 import emailService from '../../infra/email/email.service.js';
 import prisma from '../../databases/prisma.js';
-import { validarSenha } from '../middlewares/validations/usuario.validation.js';
+import { validarSenha } from '../validations/usuario.validation.js';
 
 class PasswordService {
         async forgotPassword(email) {

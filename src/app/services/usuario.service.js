@@ -1,5 +1,5 @@
 import usuarioRepository from "../repositories/usuario.repository.js";
-import { validarSenha, validarAtualizacaoUsuario, validarLoginUsuario, validarCriacaoUsuario } from "../middlewares/validations/usuario.validation.js";
+import { validarSenha, validarAtualizacaoUsuario, validarLoginUsuario, validarCriacaoUsuario } from "../validations/usuario.validation.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
