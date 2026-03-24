@@ -61,6 +61,18 @@ class PlantaController {
         }
     }
 
+    async delete(req, res) {
+        try {
+            const userId = req.usuarioId;
+
+            await plantaService.delete(userId);
+
+            return res.status(200).json({ message: "Planta deletada com sucesso." });
+        } catch (error) {
+            return res.status(400).json({ message: error.message });
+        }
+    }
+
 }
 
 export default new PlantaController();
