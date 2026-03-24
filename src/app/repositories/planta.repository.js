@@ -31,6 +31,14 @@ class PlantaRepository {
         });
     }
 
+    delete = async (userId) => {
+        return await prisma.planta.delete({
+            where: {
+                fk_usuario_id: userId
+            }
+        });
+    }
+
 }
 
 export default new PlantaRepository();
