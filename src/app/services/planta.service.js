@@ -1,8 +1,8 @@
 import plantaRepository from "../repositories/planta.repository.js";
-import { validarCriacaoPlanta } from "../middlewares/validations/planta.validation.js";
+import { validarCriacaoPlanta } from "../validations/planta.validation.js";
 
 class PlantaService {
-    
+
     async create(data) {
         validarCriacaoPlanta(data);
         return await plantaRepository.create(data);
@@ -18,6 +18,10 @@ class PlantaService {
 
     async findById(id) {
         return await plantaRepository.findById(id);
+    }
+
+    async delete(userId) {
+        return await plantaRepository.delete(userId);
     }
 
 }
