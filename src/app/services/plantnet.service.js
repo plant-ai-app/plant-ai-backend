@@ -28,7 +28,7 @@ class PlantnetService {
             const rawImages = Array.isArray(item.images) ? item.images.slice(0, 6) : [];
             
             const mappedImages = rawImages.map(img => ({
-                url: img.url && img.url.o ? img.url.o : '',
+                url: img.url && img.url.m ? img.url.m : '',
                 author: img.author || '',
                 license: img.license || '',
                 citation: img.citation || ''
