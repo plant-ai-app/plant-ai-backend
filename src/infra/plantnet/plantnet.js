@@ -7,7 +7,7 @@ if (!process.env.PLANTNET_API_KEY) {
 const plantNetApiKey = process.env.PLANTNET_API_KEY || '';
 const plantNetApiUrl = "https://my-api.plantnet.org/v2/identify/all";
 
-export const identifyPlant = async (imageBuffer, language = 'pt') => {
+export const identifyPlant = async (imageBuffer, mimeType = 'image/jpeg', language = 'pt') => {
   if (!plantNetApiKey) {
     throw new Error("API Key do Pl@ntNet não configurada");
   }
@@ -15,7 +15,7 @@ export const identifyPlant = async (imageBuffer, language = 'pt') => {
   try {
     const formData = new FormData();
     // A API do Pl@ntNet requer o campo 'organs' além do arquivo de imagem
-    formData.append('images', new Blob([imageBuffer]), 'image.jpg');
+    formData.append('images', new Blob([imageBuffer], { type: mimeType }), 'image.jpg');
     formData.append('organs', 'auto');
 
     const url = new URL(plantNetApiUrl);
