@@ -14,6 +14,8 @@ class PlantaController {
                 observacao,
             } = req.body;
 
+            const hostUrl = `${req.protocol}://${req.get("host")}`;
+
             const data = {
                fk_usuario_id: req.usuarioId,
                fk_local_id,
@@ -23,6 +25,7 @@ class PlantaController {
                foto_url,
                data_aquisicao,
                observacao,
+               hostUrl
             }
 
             const planta = await plantaService.create(data);
