@@ -9,8 +9,7 @@ class CuidadoRepository {
                 proxima_data: new Date(data.proxima_data)
             },
             include: {
-                tipo: true,
-                planta: true
+                tipo: true
             }
         });
     }
@@ -18,8 +17,7 @@ class CuidadoRepository {
     findAll = async () => {
         return await prisma.cuidado.findMany({
             include: {
-                tipo: true,
-                planta: true
+                tipo: true
             }
         });
     }
@@ -28,9 +26,7 @@ class CuidadoRepository {
         return await prisma.cuidado.findUnique({
             where: { id },
             include: {
-                tipo: true,
-                planta: true,
-                historicos: true
+                tipo: true
             }
         });
     }
@@ -53,8 +49,7 @@ class CuidadoRepository {
             where: { id },
             data,
             include: {
-                tipo: true,
-                planta: true
+                tipo: true
             }
         });
     }
