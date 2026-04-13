@@ -2,7 +2,7 @@ import plantaService from "../services/planta.service.js";
 
 class PlantaController {
     
-    async create(req, res) {
+    create = async (req, res) => {
         try {
             const {
                 fk_local_id,
@@ -30,41 +30,50 @@ class PlantaController {
 
             const planta = await plantaService.create(data);
           
-            return res.status(201).json({ message: "Planta criada com sucesso.", planta });
+            return res.status(201).json({ 
+                message: "Planta criada com sucesso.", 
+                planta: this._formatPlanta(planta, hostUrl) 
+            });
         } catch (error) {
+            console.log(error);
             return res.status(400).json({ message: error.message });
         }
     }
 
-    async findAll(req, res) {
+    findAll = async (req, res) => {
         try {
+            const hostUrl = `${req.protocol}://${req.get("host")}`;
             const plantas = await plantaService.findAll();
-            return res.status(200).json({message: "Plantas encontradas com sucesso.", plantas});
+            const formattedPlantas = plantas.map(p => this._formatPlanta(p, hostUrl));
+            return res.status(200).json({message: "Plantas encontradas com sucesso.", plantas: formattedPlantas});
         } catch (error) {
             return res.status(400).json({ message: error.message });
         }
     }
 
-    async findByUserId(req, res) {
+    findByUserId = async (req, res) => {
         try {
+            const hostUrl = `${req.protocol}://${req.get("host")}`;
             const userId = req.usuarioId;
             const plantas = await plantaService.findByUserId(userId);
-            return res.status(200).json({message: "Plantas encontradas com sucesso.", plantas});
+            const formattedPlantas = plantas.map(p => this._formatPlanta(p, hostUrl));
+            return res.status(200).json({message: "Plantas encontradas com sucesso.", plantas: formattedPlantas});
         } catch (error) {
             return res.status(400).json({ message: error.message });
         }
     }
 
-    async findById(req, res) {
+    findById = async (req, res) => {
         try {
+            const hostUrl = `${req.protocol}://${req.get("host")}`;
             const planta = await plantaService.findById(req.params.id);
-            return res.status(200).json({message: "Planta encontrada com sucesso.", planta});
+            return res.status(200).json({message: "Planta encontrada com sucesso.", planta: this._formatPlanta(planta, hostUrl)});
         } catch (error) {
             return res.status(400).json({ message: error.message });
         }
     }
 
-    async delete(req, res) {
+    delete = async (req, res) => {
         try {
             const userId = req.usuarioId;
 
@@ -74,6 +83,14 @@ class PlantaController {
         } catch (error) {
             return res.status(400).json({ message: error.message });
         }
+    }
+
+    _formatPlanta = (planta, hostUrl) => {
+        if (!planta) return null;
+        if (planta.foto_url && !planta.foto_url.startsWith("http")) {
+            planta.foto_url = `${hostUrl}${planta.foto_url}`;
+        }
+        return planta;
     }
 
 }
