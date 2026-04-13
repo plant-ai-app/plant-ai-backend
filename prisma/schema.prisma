@@ -64,10 +64,61 @@ model Planta {
   local Local? @relation(fields: [fk_local_id], references: [id])
 
   usuario Usuario @relation(fields: [fk_usuario_id], references: [id])
+
+  cuidados Cuidado[]
 }
 
 model Local {
   id     Int      @id @default(autoincrement())
   nome   String   @db.VarChar(100)
   planta Planta[]
+}
+
+// O Domínio (Rega, Poda, Adubação)
+model CuidadoTipo {
+  id        String  @id @default(uuid())
+  nome      String
+  descricao String?
+
+  cuidados Cuidado[]
+}
+
+// O Planejamento (O que e quando fazer)
+model Cuidado {
+  id                   String   @id @default(uuid())
+  frequencia_dias      Int
+  proxima_data         DateTime
+  quantidade_instrucao String?
+  horario_preferencial String?
+  ativo                Boolean  @default(true)
+  criado_em            DateTime @default(now())
+  atualizado_em        DateTime @updatedAt
+
+  planta_id Int
+  planta    Planta @relation(fields: [planta_id], references: [id])
+
+  tipo_id String
+  tipo    CuidadoTipo @relation(fields: [tipo_id], references: [id])
+
+  historicos HistoricoCuidado[]
+}
+
+// Definindo as opções possíveis
+enum StatusCuidado {
+  CONCLUIDO
+  PULADO
+  ATRASADO
+  CANCELADO
+}
+
+model HistoricoCuidado {
+  id              String        @id @default(uuid())
+  data_realizacao DateTime      @default(now())
+  observacoes     String?
+  status          StatusCuidado
+  criado_em       DateTime      @default(now())
+  atualizado_em   DateTime      @updatedAt
+
+  cuidado_id String
+  cuidado    Cuidado @relation(fields: [cuidado_id], references: [id])
 }
