@@ -33,7 +33,7 @@ class PlantaRepository {
     findById = async (id) => {
         return await prisma.planta.findUnique({
             where: {
-                id
+                id: parseInt(id)
             }
         });
     }
