@@ -22,7 +22,7 @@ class PlantaService {
             const filepath = path.resolve(uploadsDir, filename);
             fs.writeFileSync(filepath, base64Data, 'base64');
             
-            data.foto_url = `${data.hostUrl}/uploads/${userFolder}/${filename}`;
+            data.foto_url = `/uploads/${userFolder}/${filename}`;
         }
         
         const { hostUrl, ...dataToSave } = data;
