@@ -12,13 +12,20 @@ class PlantaRepository {
     }
     
     findAll = async () =>{
-        return await prisma.planta.findMany();
+        return await prisma.planta.findMany({
+            include: {
+                local: true
+            }
+        });
     }
 
     findByUserId = async (fk_usuario_id) =>{
         return await prisma.planta.findMany({
             where: {
                 fk_usuario_id
+            },
+            include: {
+                local: true
             }
         });
     }
