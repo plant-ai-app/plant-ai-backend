@@ -16,6 +16,10 @@ class CuidadoService {
             throw new Error("O campo 'proxima_data' é obrigatório.");
         }
 
+        if (data.quantidade_instrucao && data.quantidade_instrucao.length > 80) {
+            throw new Error("O campo 'quantidade_instrucao' não pode exceder 80 caracteres.");
+        }
+
         return await cuidadoRepository.create(data);
     }
 
@@ -37,6 +41,11 @@ class CuidadoService {
 
     async update(id, data) {
         await this.findById(id);
+
+        if (data.quantidade_instrucao && data.quantidade_instrucao.length > 80) {
+            throw new Error("O campo 'quantidade_instrucao' não pode exceder 80 caracteres.");
+        }
+
         return await cuidadoRepository.update(id, data);
     }
 
