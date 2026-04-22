@@ -88,7 +88,7 @@ model Cuidado {
   id                   String   @id @default(uuid())
   frequencia_dias      Int
   proxima_data         DateTime
-  quantidade_instrucao String?
+  quantidade_instrucao String?  @db.VarChar(80)
   horario_preferencial String?
   ativo                Boolean  @default(true)
   criado_em            DateTime @default(now())
