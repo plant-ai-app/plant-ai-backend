@@ -22,6 +22,20 @@ class CuidadoRepository {
         });
     }
 
+    findAllByUsuarioId = async (usuario_id) => {
+        return await prisma.cuidado.findMany({
+            where: {
+                planta: {
+                    fk_usuario_id: usuario_id
+                }
+            },
+            include: {
+                tipo: true,
+                planta: true
+            }
+        });
+    }
+
     findById = async (id) => {
         return await prisma.cuidado.findUnique({
             where: { id },
