@@ -42,6 +42,16 @@ class CuidadoController {
         }
     }
 
+    findAllByUsuario = async (req, res) => {
+        try {
+            const usuario_id = req.usuarioId;
+            const cuidados = await cuidadoService.findAllByUsuarioId(usuario_id);
+            return res.status(200).json({ message: "Cuidados do usuário encontrados.", cuidados });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
     findById = async (req, res) => {
         try {
             const cuidado = await cuidadoService.findById(req.params.id);
