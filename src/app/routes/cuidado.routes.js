@@ -4,7 +4,7 @@ import cuidadoController from "../controllers/cuidado.controller.js";
 
 const router = Router();
 
-router.get("/cuidado", cuidadoController.findAll);
+router.get("/cuidado", authMiddleware, cuidadoController.findAllByUsuario);
 router.post("/cuidado", authMiddleware, cuidadoController.create);
 router.get("/cuidado/:id", authMiddleware, cuidadoController.findById);
 router.get("/cuidado/planta/:plantaId", authMiddleware, cuidadoController.findByPlantaId);
