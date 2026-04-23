@@ -1,4 +1,5 @@
 import cuidadoRepository from "../repositories/cuidado.repository.js";
+import { validateUniqueCareType } from "../validations/cuidado.validation.js";
 
 class CuidadoService {
 
@@ -20,11 +21,17 @@ class CuidadoService {
             throw new Error("O campo 'quantidade_instrucao' não pode exceder 80 caracteres.");
         }
 
+        await validateUniqueCareType(data.planta_id, data.tipo_id);
+
         return await cuidadoRepository.create(data);
     }
 
     async findAll() {
         return await cuidadoRepository.findAll();
+    }
+
+    async findAllByUsuarioId(usuario_id) {
+        return await cuidadoRepository.findAllByUsuarioId(usuario_id);
     }
 
     async findById(id) {
