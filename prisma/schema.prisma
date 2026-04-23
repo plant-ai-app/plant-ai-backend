@@ -101,6 +101,8 @@ model Cuidado {
   tipo    CuidadoTipo @relation(fields: [tipo_id], references: [id])
 
   historicos HistoricoCuidado[]
+
+  @@unique([planta_id, tipo_id])
 }
 
 // Definindo as opções possíveis
