@@ -34,6 +34,9 @@ class PlantaRepository {
         return await prisma.planta.findUnique({
             where: {
                 id: parseInt(id)
+            },
+            include: {
+                cuidados: true
             }
         });
     }
