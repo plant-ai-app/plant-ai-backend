@@ -7,7 +7,7 @@ class PlantnetController {
             // Este endpoint pode receber a imagem ou a url da imagem
             // para enviar para identificação no Pl@ntNet.
             const plants = await plantnetService.identify(req);
-          
+            console.log("Identificação realizada com sucesso.", plants)
             return res.status(200).json({ message: "Identificação realizada com sucesso.", plants });
         } catch (error) {
             // Se o erro for de "não encontrada", podemos retornar um 404, senão 400.
