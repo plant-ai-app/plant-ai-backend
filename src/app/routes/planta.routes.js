@@ -7,6 +7,8 @@ const router = Router();
 router.post(["/planta", "/plants"], authMiddleware, plantaController.create);
 router.get("/plants", plantaController.findAll);
 router.get("/plants/user", authMiddleware, plantaController.findByUserId);
-router.get("/plants/:id", plantaController.findById);
+router.get("/plant/:id", plantaController.findById);
+router.put("/plant/:id", authMiddleware, plantaController.update);
+router.delete("/plant/:id", authMiddleware, plantaController.delete);
 
 export default router
