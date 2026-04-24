@@ -38,11 +38,20 @@ class PlantaRepository {
         });
     }
 
-    delete = async (userId) => {
+    delete = async (id) => {
         return await prisma.planta.delete({
             where: {
-                fk_usuario_id: userId
+                id: parseInt(id)
             }
+        });
+    }
+
+    update = async (id, data) => {
+        return await prisma.planta.update({
+            where: {
+                id: parseInt(id)
+            },
+            data
         });
     }
 
