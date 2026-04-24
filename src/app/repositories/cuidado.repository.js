@@ -26,12 +26,15 @@ class CuidadoRepository {
     findAllByUsuarioId = async (usuario_id) => {
         return await prisma.cuidado.findMany({
             where: {
+                ativo: true,
                 planta: {
                     fk_usuario_id: usuario_id
+
                 }
             },
             select: {
                 id: true,
+                planta_id: true,
                 proxima_data: true,
                 quantidade_instrucao: true,
                 horario_preferencial: true,
@@ -42,15 +45,24 @@ class CuidadoRepository {
                 },
                 planta: {
                     select: {
+                        id: true,
+                        nome_popular: true,
                         apelido: true,
-                        foto_url: true
+                        foto_url: true,
+
+                        local: {
+                            select: {
+                                nome: true
+                            }
+                        }
                     }
                 }
+
             },
             orderBy: {
                 proxima_data: 'asc'
             }
-    });
+        });
     }
 
     findById = async (id) => {
@@ -73,7 +85,7 @@ class CuidadoRepository {
 
     findByPlantaAndTipo = async (planta_id, tipo_id) => {
         return await prisma.cuidado.findFirst({
-            where: { 
+            where: {
                 planta_id,
                 tipo_id
             }
