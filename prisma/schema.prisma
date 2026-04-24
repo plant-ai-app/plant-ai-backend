@@ -55,6 +55,7 @@ model Planta {
   nome_popular    String    @db.VarChar(100)
   nome_cientifico String?   @db.VarChar(100)
   apelido         String?   @db.VarChar(100)
+  familia         String?   @db.VarChar(100)
   foto_url        String?   @db.VarChar(255)
   data_aquisicao  DateTime? @db.Date
   observacao      String?   @db.VarChar(255)
@@ -63,7 +64,7 @@ model Planta {
 
   local Local? @relation(fields: [fk_local_id], references: [id])
 
-  usuario Usuario @relation(fields: [fk_usuario_id], references: [id])
+  usuario Usuario @relation(fields: [fk_usuario_id], references: [id], onDelete: Cascade)
 
   cuidados Cuidado[]
 }
@@ -95,7 +96,7 @@ model Cuidado {
   atualizado_em        DateTime @updatedAt
 
   planta_id Int
-  planta    Planta @relation(fields: [planta_id], references: [id])
+  planta    Planta @relation(fields: [planta_id], references: [id], onDelete: Cascade)
 
   tipo_id String
   tipo    CuidadoTipo @relation(fields: [tipo_id], references: [id])
@@ -122,5 +123,5 @@ model HistoricoCuidado {
   atualizado_em   DateTime      @updatedAt
 
   cuidado_id String
-  cuidado    Cuidado @relation(fields: [cuidado_id], references: [id])
+  cuidado    Cuidado @relation(fields: [cuidado_id], references: [id], onDelete: Cascade)
 }
