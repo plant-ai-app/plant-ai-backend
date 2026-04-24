@@ -8,6 +8,7 @@ class PlantaController {
                 fk_local_id,
                 nome_popular,
                 nome_cientifico,
+                familia,
                 apelido,
                 foto_url,
                 data_aquisicao,
@@ -21,6 +22,7 @@ class PlantaController {
                fk_local_id,
                nome_popular,
                nome_cientifico,
+               familia,
                apelido,
                foto_url,
                data_aquisicao,
@@ -76,10 +78,29 @@ class PlantaController {
     delete = async (req, res) => {
         try {
             const userId = req.usuarioId;
+            const plantId = req.params.id;
 
-            await plantaService.delete(userId);
+            await plantaService.delete(plantId, userId);
 
             return res.status(200).json({ message: "Planta deletada com sucesso." });
+        } catch (error) {
+            return res.status(400).json({ message: error.message });
+        }
+    }
+
+    update = async (req, res) => {
+        try {
+            const userId = req.usuarioId;
+            const plantId = req.params.id;
+            const data = req.body;
+            const hostUrl = `${req.protocol}://${req.get("host")}`;
+
+            const plantaAtualizada = await plantaService.update(plantId, data, userId);
+
+            return res.status(200).json({ 
+                message: "Planta atualizada com sucesso.", 
+                planta: this._formatPlanta(plantaAtualizada, hostUrl) 
+            });
         } catch (error) {
             return res.status(400).json({ message: error.message });
         }
