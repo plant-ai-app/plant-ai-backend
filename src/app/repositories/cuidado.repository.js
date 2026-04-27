@@ -38,9 +38,10 @@ class CuidadoRepository {
                 proxima_data: true,
                 quantidade_instrucao: true,
                 horario_preferencial: true,
+                ativo: true,
                 tipo: {
                     select: {
-                        nome: true
+                           nome: true
                     }
                 },
                 planta: {
