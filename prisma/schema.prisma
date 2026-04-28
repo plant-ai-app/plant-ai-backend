@@ -110,18 +110,19 @@ model Cuidado {
 enum StatusCuidado {
   CONCLUIDO
   PULADO
-  ATRASADO
-  CANCELADO
 }
 
 model HistoricoCuidado {
   id              String        @id @default(uuid())
   data_realizacao DateTime      @default(now())
+  data_prevista   DateTime
   observacoes     String?
   status          StatusCuidado
   criado_em       DateTime      @default(now())
-  atualizado_em   DateTime      @updatedAt
 
   cuidado_id String
   cuidado    Cuidado @relation(fields: [cuidado_id], references: [id], onDelete: Cascade)
+  @@unique([cuidado_id, data_prevista])
+  @@index([cuidado_id])
+  @@index([data_prevista])
 }
