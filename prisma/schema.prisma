@@ -119,6 +119,8 @@ model HistoricoCuidado {
   observacoes     String?
   status          StatusCuidado
   criado_em       DateTime      @default(now())
+  atualizado_em        DateTime @updatedAt
+
 
   cuidado_id String
   cuidado    Cuidado @relation(fields: [cuidado_id], references: [id], onDelete: Cascade)
