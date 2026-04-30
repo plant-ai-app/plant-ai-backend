@@ -20,13 +20,55 @@ async function main() {
     { nome: 'Exposição Solar', descricao: 'Ajuste temporário do vaso para receber mais ou menos luz solar.' }
   ];
 
+  // Imagens de perfil disponíveis na pasta /perfil
+  const fotosPerfil = [
+    { id: 1, path_url: 'perfil/default.png' },
+    { id: 2, path_url: 'perfil/avatar1.png' },
+    { id: 3, path_url: 'perfil/avatar2.png' },
+    { id: 4, path_url: 'perfil/avatar3.png' },
+    { id: 5, path_url: 'perfil/avatar4.png' },
+    { id: 6, path_url: 'perfil/avatar5.png' },
+    { id: 7, path_url: 'perfil/avatar6.png' },
+  ];
+
+  for (const foto of fotosPerfil) {
+    await prisma.fotoPerfil.upsert({
+      where: { id: foto.id },
+      update: { path_url: foto.path_url },
+      create: foto,
+    });
+  }
+
   // O createMany já insere tudo de uma vez de forma performática
-  const resultado = await prisma.cuidadoTipo.createMany({
+  const resultadoTipos = await prisma.cuidadoTipo.createMany({
     data: tiposIniciais,
-    skipDuplicates: true, // Garante que não vai duplicar se você rodar o comando duas vezes
+    skipDuplicates: true,
   });
 
-  console.log(`✅ Seed concluído! Foram inseridos/verificados ${resultado.count} tipos de cuidados.`);
+  const locaisIniciais = [
+    { id: 1, nome: 'Quarto' },
+    { id: 2, nome: 'Sala' },
+    { id: 3, nome: 'Cozinha' },
+    { id: 4, nome: 'Banheiro' },
+    { id: 5, nome: 'Escritório' },
+    { id: 6, nome: 'Jardim' },
+    { id: 7, nome: 'Varanda' },
+    { id: 8, nome: 'Quintal' },
+    { id: 9, nome: 'nenhum' }
+  ];
+
+  for (const local of locaisIniciais) {
+    await prisma.local.upsert({
+      where: { id: local.id },
+      update: { nome: local.nome },
+      create: local,
+    });
+  }
+
+  console.log('✅ Seed concluído!');
+  console.log(`- ${fotosPerfil.length} fotos de perfil verificadas/inseridas.`);
+  console.log(`- ${resultadoTipos.count} tipos de cuidados inseridos/verificados.`);
+  console.log(`- ${locaisIniciais.length} locais inseridos/verificados.`);
 }
 
 main()
