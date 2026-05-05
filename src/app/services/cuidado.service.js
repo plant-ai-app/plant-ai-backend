@@ -1,5 +1,5 @@
 import cuidadoRepository from "../repositories/cuidado.repository.js";
-import { validateCuidadoCreate, validateCuidadoUpdate } from "../validations/cuidado.validation.js";
+import { validateCuidadoCreate, validateCuidadoUpdate, validateCuidadoDeleteMany } from "../validations/cuidado.validation.js";
 
 class CuidadoService {
 
@@ -39,6 +39,11 @@ class CuidadoService {
     async delete(id) {
         await this.findById(id);
         return await cuidadoRepository.delete(id);
+    }
+
+    async deleteMany(ids, usuario_id) {
+        validateCuidadoDeleteMany(ids);
+        return await cuidadoRepository.deleteMany(ids, usuario_id);
     }
 
 }
