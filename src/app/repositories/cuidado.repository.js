@@ -113,6 +113,17 @@ class CuidadoRepository {
         });
     }
 
+    deleteMany = async (ids, usuario_id) => {
+        return await prisma.cuidado.deleteMany({
+            where: {
+                id: { in: ids },
+                planta: {
+                    fk_usuario_id: usuario_id
+                }
+            }
+        });
+    }
+
 }
 
 export default new CuidadoRepository();
