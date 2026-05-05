@@ -10,5 +10,6 @@ router.get("/plants/user", authMiddleware, plantaController.findByUserId);
 router.get("/plant/:id", plantaController.findById);
 router.put("/plant/:id", authMiddleware, plantaController.update);
 router.delete("/plant/:id", authMiddleware, plantaController.delete);
+router.delete("/plants", authMiddleware, plantaController.deleteMany);
 
 export default router
