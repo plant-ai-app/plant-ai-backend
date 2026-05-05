@@ -49,6 +49,15 @@ class PlantaRepository {
         });
     }
 
+    deleteMany = async (ids, fk_usuario_id) => {
+        return await prisma.planta.deleteMany({
+            where: {
+                id: { in: ids.map(id => parseInt(id)) },
+                fk_usuario_id
+            }
+        });
+    }
+
     update = async (id, data) => {
         return await prisma.planta.update({
             where: {
