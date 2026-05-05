@@ -56,6 +56,13 @@ class PlantaService {
         return await plantaRepository.delete(id);
     }
 
+    async deleteMany(ids, userId) {
+        if (!ids || !Array.isArray(ids) || ids.length === 0) {
+            throw new Error("É necessário informar os IDs das plantas a serem deletadas.");
+        }
+        return await plantaRepository.deleteMany(ids, userId);
+    }
+
     async update(id, data, userId) {
         const planta = await plantaRepository.findById(id);
         
