@@ -89,6 +89,17 @@ class CuidadoController {
         }
     }
 
+    deleteMany = async (req, res) => {
+        try {
+            const { ids } = req.body;
+            const usuario_id = req.usuarioId;
+            const result = await cuidadoService.deleteMany(ids, usuario_id);
+            return res.status(200).json({ message: `${result.count} cuidado(s) deletado(s) com sucesso.` });
+        } catch (error) {
+            return res.status(400).json({ message: error.message });
+        }
+    }
+
 }
 
 export default new CuidadoController();
