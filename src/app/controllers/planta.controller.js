@@ -88,6 +88,19 @@ class PlantaController {
         }
     }
 
+    deleteMany = async (req, res) => {
+        try {
+            const userId = req.usuarioId;
+            const { ids } = req.body;
+
+            await plantaService.deleteMany(ids, userId);
+
+            return res.status(200).json({ message: "Plantas deletadas com sucesso." });
+        } catch (error) {
+            return res.status(400).json({ message: error.message });
+        }
+    }
+
     update = async (req, res) => {
         try {
             const userId = req.usuarioId;
