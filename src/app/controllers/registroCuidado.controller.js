@@ -33,7 +33,8 @@ class RegistroCuidadoController {
 
     findAll = async (req, res) => {
         try {
-            const registros = await registroCuidadoService.findAll();
+            const usuarioId = req.usuarioId;
+            const registros = await registroCuidadoService.findAll(usuarioId);
             return res.status(200).json({ message: "Registros encontrados.", registros });
         } catch (error) {
             return res.status(500).json({ message: error.message });

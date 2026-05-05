@@ -25,8 +25,8 @@ class RegistroCuidadoService {
         return await registroCuidadoRepository.createWithTransaction(data, cuidado.id, novaProximaData);
     }
 
-    async findAll() {
-        return await registroCuidadoRepository.findAll();
+    async findAll(usuarioId) {
+        return await registroCuidadoRepository.findAll(usuarioId);
     }
 
     async findById(id) {
