@@ -10,5 +10,6 @@ router.get("/cuidado/:id", authMiddleware, cuidadoController.findById);
 router.get("/cuidado/planta/:plantaId", authMiddleware, cuidadoController.findByPlantaId);
 router.patch("/cuidado/:id", authMiddleware, cuidadoController.update);
 router.delete("/cuidado/:id", authMiddleware, cuidadoController.delete);
+router.delete("/cuidado", authMiddleware, cuidadoController.deleteMany);
 
 export default router;
