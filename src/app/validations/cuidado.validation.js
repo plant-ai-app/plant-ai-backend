@@ -33,3 +33,15 @@ export const validateCuidadoUpdate = (data) => {
         throw new Error("O campo 'quantidade_instrucao' não pode exceder 80 caracteres.");
     }
 }
+
+export const validateCuidadoDeleteMany = (ids) => {
+    if (!ids) {
+        throw new Error("O campo 'ids' é obrigatório.");
+    }
+    if (!Array.isArray(ids)) {
+        throw new Error("O campo 'ids' deve ser um array.");
+    }
+    if (ids.length === 0) {
+        throw new Error("O campo 'ids' não pode estar vazio.");
+    }
+}
