@@ -61,12 +61,17 @@ class CuidadoController {
         }
     }
 
+    //retorna todos os cuidados de uma planta pertencente ao usuário
     findByPlantaId = async (req, res) => {
         try {
             const planta_id = parseInt(req.params.plantaId);
-            const cuidados = await cuidadoService.findByPlantaId(planta_id);
+            const usuario_id = req.usuarioId;
+            const cuidados = await cuidadoService.findByPlantaId(planta_id, usuario_id);
             return res.status(200).json({ message: "Cuidados da planta encontrados.", cuidados });
         } catch (error) {
+            if (error.message === "Acesso negado.") {
+                return res.status(403).json({ message: error.message });
+            }
             return res.status(400).json({ message: error.message });
         }
     }

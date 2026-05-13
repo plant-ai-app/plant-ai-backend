@@ -1,4 +1,5 @@
 import cuidadoRepository from "../repositories/cuidado.repository.js";
+import plantaRepository from "../repositories/planta.repository.js";
 import { validateCuidadoCreate, validateCuidadoUpdate, validateCuidadoDeleteMany } from "../validations/cuidado.validation.js";
 
 class CuidadoService {
@@ -24,7 +25,10 @@ class CuidadoService {
         return cuidado;
     }
 
-    async findByPlantaId(planta_id) {
+    async findByPlantaId(planta_id, usuario_id) {
+        const planta = await plantaRepository.findById(planta_id);
+        if (!planta) throw new Error("Planta não encontrada.");
+        if (planta.fk_usuario_id !== usuario_id) throw new Error("Acesso negado.");
         return await cuidadoRepository.findByPlantaId(planta_id);
     }
 
