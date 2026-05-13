@@ -58,7 +58,8 @@ class RegistroCuidadoRepository {
                 tipo_id: r.cuidado.tipo.id,
                 planta: r.cuidado.planta.apelido || r.cuidado.planta.nome_popular,
                 planta_id: r.cuidado.planta.id,
-                foto: r.cuidado.planta.foto_url
+                foto: r.cuidado.planta.foto_url,
+                observacoes: r.observacoes
             }));
         }
 
