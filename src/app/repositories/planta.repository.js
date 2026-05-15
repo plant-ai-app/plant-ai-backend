@@ -36,8 +36,14 @@ class PlantaRepository {
                 id: parseInt(id)
             },
             include: {
-                cuidados: true
+                local: {
+                    select: {
+                        nome: true,
+                        id: true
+                    }
+                }
             }
+
         });
     }
 
