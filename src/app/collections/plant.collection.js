@@ -47,4 +47,23 @@ const PlantSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+PlantSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+    delete ret.createdAt;
+    delete ret.updatedAt;
+
+    if (ret.ideal_locations) {
+      ret.ideal_locations.forEach(loc => delete loc._id);
+    }
+    if (ret.alerts && ret.alerts.common_problems) {
+      ret.alerts.common_problems.forEach(prob => delete prob._id);
+    }
+
+    return ret;
+  }
+});
+
 export default mongoose.model('Plant', PlantSchema);
