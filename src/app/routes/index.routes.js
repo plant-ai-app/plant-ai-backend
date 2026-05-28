@@ -7,6 +7,7 @@ import plantnetRoutes from './plantnet.routes.js';
 import cuidadoTipoRoutes from './cuidadoTipo.routes.js';
 import cuidadoRoutes from './cuidado.routes.js';
 import registroCuidadoRoutes from './registroCuidado.routes.js';
+import aiPlantRoutes from './aiPlant.routes.js';
 
 
 export const Routes = (app) =>{
@@ -19,4 +20,5 @@ export const Routes = (app) =>{
     app.use('/api', cuidadoTipoRoutes);
     app.use('/api', cuidadoRoutes);
     app.use('/api', registroCuidadoRoutes);
+    app.use('/api', aiPlantRoutes);
 }
