@@ -2,6 +2,8 @@ import usuarioRepository from "../repositories/usuario.repository.js";
 import { validarSenha, validarAtualizacaoUsuario, validarLoginUsuario, validarCriacaoUsuario } from "../validations/usuario.validation.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import fs from "fs";
+import path from "path";
 
 
 class UsuarioService {
@@ -103,7 +105,14 @@ class UsuarioService {
 
         await this.compararSenhas(user, senha);
 
-        return await usuarioRepository.delete(usuarioId);
+        const result = await usuarioRepository.delete(usuarioId);
+
+        const userFolder = path.resolve("uploads", "users", `user_${usuarioId}`);
+        if (fs.existsSync(userFolder)) {
+            fs.rmSync(userFolder, { recursive: true, force: true });
+        }
+
+        return result;
     }
 
     update = async (id, data) => {
