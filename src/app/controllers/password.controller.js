@@ -12,6 +12,14 @@ class passwordController{
            return res.status(500).json({message: error.message});
         }
     }
+    validate = async (req, res) => {
+        try {
+            return res.status(200).json({ message: "Token válido." });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
     reset = async (req, res) => {
         try {
             const { token, novaSenha, confirmarSenha } = req.body;

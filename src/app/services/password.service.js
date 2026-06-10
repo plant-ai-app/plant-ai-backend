@@ -29,7 +29,7 @@ class PasswordService {
                 token_hash: tokenHash,
                 expira_em: expriraEm
             })
-            const link = `http://10.181.201.214:5173/reset-password?token=${token}`;
+            const link = `http://localhost:5173/reset-password?token=${token}`;
             await emailService.sendPasswordReset(usuario.email, link);
             
         }
