@@ -7,8 +7,7 @@ import prisma from '../../databases/prisma.js';
 import { validarSenha } from '../validations/usuario.validation.js';
 
 class PasswordService {
-        async forgotPassword(email) {
-
+        async forgotPassword(email, origin) {
             if(!email) {
                 throw new Error('Por favor, forneça um e-mail.');
             }
@@ -29,7 +28,9 @@ class PasswordService {
                 token_hash: tokenHash,
                 expira_em: expriraEm
             })
-            const link = `http://localhost:5173/reset-password?token=${token}`;
+
+            const baseUrl = origin ? origin.replace(/\/$/, '') : 'http://localhost:5173';
+            const link = `${baseUrl}/reset-password?token=${token}`;
             await emailService.sendPasswordReset(usuario.email, link);
             
         }
