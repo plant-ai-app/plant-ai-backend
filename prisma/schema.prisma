@@ -78,7 +78,7 @@ model Local {
 // O Domínio (Rega, Poda, Adubação)
 model CuidadoTipo {
   id        String  @id @default(uuid())
-  nome      String
+  nome      String  @unique
   descricao String?
 
   cuidados Cuidado[]
