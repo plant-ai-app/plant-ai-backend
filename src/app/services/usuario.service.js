@@ -42,20 +42,22 @@ class UsuarioService {
     }
 
     create = async ({ nome, email, senha, confirmaSenha }) => {
+        const sanitizedEmail = email?.trim().toLowerCase();
+
         //email unico
-        const usuarioExistente = await usuarioRepository.findByEmail(email);
+        const usuarioExistente = await usuarioRepository.findByEmail(sanitizedEmail);
 
         if (usuarioExistente) {
             throw new Error("Já existe um usuário cadastrado com esse e-mail.");
         }
 
-        validarCriacaoUsuario(nome, email, senha, confirmaSenha);
+        validarCriacaoUsuario(nome, sanitizedEmail, senha, confirmaSenha);
 
         const senhaHash = await bcrypt.hash(senha, 10);
 
         const usuario = await usuarioRepository.create({
             nome,
-            email,
+            email: sanitizedEmail,
             senha_hash: senhaHash
         })
 
@@ -64,9 +66,10 @@ class UsuarioService {
     }
 
     login = async (email, senha) => {
+        const sanitizedEmail = email?.trim().toLowerCase();
 
         // verificar se o usuario existe
-        const usuario = await usuarioRepository.findByEmail(email);
+        const usuario = await usuarioRepository.findByEmail(sanitizedEmail);
 
         if (!usuario) {
             throw new Error("E-mail ou senha inválidos.");
